@@ -1,6 +1,6 @@
 # visiology-py
 
-Высокоуровневые обертки и вспомогательные функции для работы с API Visiology: ViQube, ViQube Admin и Datacollection.
+Высокоуровневые обертки и вспомогательные функции для работы с API Visiology: ViQube, ViQube Admin и Datacollection
 
 ## Подготовка к разработке
 
@@ -9,7 +9,7 @@
 
 ## Проверка
 
-1. `$ make test` -- тесты (`pytest`)
-1. `$ make lint` -- линтинг (`pycodestyle`)
-1. `$ make typecheck` -- проверка типов (`mypy`)
-1. `$ make` -- всё вышеперечисленное
+1. `$ make test` — тесты (`pytest`)
+1. `$ make lint` — линтинг (`pycodestyle`)
+1. `$ make typecheck` — проверка типов (`mypy`)
+1. `$ make` — всё вышеперечисленное
