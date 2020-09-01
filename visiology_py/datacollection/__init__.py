@@ -6,23 +6,38 @@ import requests
 
 
 class ApiV2:
-    def __init__(self, connection: vi.Connection, requests: Any=requests) -> None:
+    def __init__(
+        self,
+        connection: vi.Connection,
+        requests: Any = requests
+    ) -> None:
         self.connection = connection
         self.requests = requests
 
-    def emit_token(self, emission_date: Optional[datetime]=None) -> vi.AuthorizationToken:
+    def emit_token(
+        self,
+        emission_date: Optional[datetime] = None
+    ) -> vi.AuthorizationToken:
         if emission_date is None:
             emission_date = datetime.now()
 
+        scopes = [
+            "openid", "profile", "email",
+            "roles", "viewer_api", "core_logic_facade",
+        ]
+        schema = self.connection.schema
+        host = self.connection.host
+        url = f"{schema}://{host}/idsrv/connect/token",
+
         response = self.requests.post(
-            f"{self.connection.schema}://{self.connection.host}/idsrv/connect/token",
+            url,
             headers={
                 "Authorization": "Basic cm8uY2xpZW50OmFtV25Cc3B9dipvfTYkSQ==",
                 "Content-Type": "application/x-www-form-urlencoded",
             },
             data={
                 "grant_type": "password",
-                "scope": "openid profile email roles viewer_api core_logic_facade",
+                "scope": " ".join(scopes),
                 "response_type": "id_token token",
                 "username": self.connection.username,
                 "password": self.connection.password,

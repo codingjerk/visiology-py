@@ -2,7 +2,7 @@ import visiology_py as vi
 import visiology_py.datacollection as dc
 
 from unittest.mock import MagicMock
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 test_connection = vi.Connection(

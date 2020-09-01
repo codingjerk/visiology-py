@@ -10,4 +10,4 @@ lint:
 
 typecheck:
 	@echo [ === TYPECHECK === ]
-	@python3 -m mypy --strict --pretty --no-error-summary --ignore-missing-imports visiology_py
+	@python3 -m mypy --strict --pretty --no-error-summary --ignore-missing-imports visiology_py tests
