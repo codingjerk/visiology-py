@@ -1,4 +1,5 @@
 from typing import NamedTuple
+from datetime import datetime
 
 
 class Connection(NamedTuple):
@@ -6,3 +7,9 @@ class Connection(NamedTuple):
     host: str
     username: str
     password: str
+
+
+class AuthorizationToken(NamedTuple):
+    type: str
+    secret: str
+    expires_at: datetime
