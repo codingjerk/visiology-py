@@ -1,4 +1,4 @@
-all: test lint typecheck
+all: test lint typecheck build
 
 test:
 	@echo [ === TEST === ]
@@ -11,3 +11,7 @@ lint:
 typecheck:
 	@echo [ === TYPECHECK === ]
 	@python3 -m mypy --strict --pretty --no-error-summary --ignore-missing-imports visiology_py tests
+
+build:
+	@echo [ === BUILD === ]
+	@python3 setup.py sdist bdist

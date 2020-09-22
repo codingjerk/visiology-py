@@ -58,8 +58,8 @@ class ApiV1:
         self,
         token: vi.AuthorizationToken,
         dimension_id: int,
-        filter: dict,
-    ) -> dict:
+        filter: Any,
+    ) -> Any:
         schema = self.connection.schema
         host = self.connection.host
         response = self.requests.get(
@@ -75,8 +75,8 @@ class ApiV1:
         self,
         token: vi.AuthorizationToken,
         dimension_id: int,
-        elements: List[dict],
-    ) -> dict:
+        elements: List[Any],
+    ) -> Any:
         schema = self.connection.schema
         host = self.connection.host
         response = self.requests.put(
@@ -92,8 +92,8 @@ class ApiV1:
         self,
         token: vi.AuthorizationToken,
         dimension_id: int,
-        elements: List[dict],
-    ) -> dict:
+        elements: List[Any],
+    ) -> Any:
         response = self.requests.post(
             self.__url(f"/dimensions/{dimension_id}/elements"),
             headers=self.__headers(token),
@@ -107,8 +107,8 @@ class ApiV1:
         self,
         token: vi.AuthorizationToken,
         dimension_id: int,
-        filter: List[dict],
-    ) -> dict:
+        filter: List[Any],
+    ) -> Any:
         response = self.requests.delete(
             self.__url(f"/dimensions/{dimension_id}/elements"),
             headers=self.__headers(token),
@@ -188,12 +188,14 @@ class ApiV2:
         self,
         token: vi.AuthorizationToken,
         dimension_unique_name: str,
-        filter: dict,
-    ) -> dict:
+        filter: Any,
+    ) -> Any:
         schema = self.connection.schema
         host = self.connection.host
         response = self.requests.get(
-            self.__url(f"/dimensions/{dimension_unique_name}/elements?getAll=true"),
+            self.__url(
+                f"/dimensions/{dimension_unique_name}/elements?getAll=true"
+            ),
             headers=self.__headers(token),
             json=filter,
         )
@@ -205,8 +207,8 @@ class ApiV2:
         self,
         token: vi.AuthorizationToken,
         dimension_unique_name: str,
-        elements: List[dict],
-    ) -> dict:
+        elements: List[Any],
+    ) -> Any:
         schema = self.connection.schema
         host = self.connection.host
         response = self.requests.put(
@@ -222,8 +224,8 @@ class ApiV2:
         self,
         token: vi.AuthorizationToken,
         dimension_unique_name: str,
-        elements: List[dict],
-    ) -> dict:
+        elements: List[Any],
+    ) -> Any:
         response = self.requests.post(
             self.__url(f"/dimensions/{dimension_unique_name}/elements"),
             headers=self.__headers(token),
@@ -237,8 +239,8 @@ class ApiV2:
         self,
         token: vi.AuthorizationToken,
         dimension_unique_name: str,
-        filter: List[dict],
-    ) -> dict:
+        filter: List[Any],
+    ) -> Any:
         response = self.requests.delete(
             self.__url(f"/dimensions/{dimension_unique_name}/elements"),
             headers=self.__headers(token),
@@ -264,58 +266,73 @@ class ApiV2:
 class Utils:
     @staticmethod
     def find_attribute_by_unique_name(
-        dimension_element: dict,
-        attribute_unique_name: dict,
-    ) -> Optional[dict]:
-        for attribute in dimension_element:
+        dimension_element: Any,
+        attribute_unique_name: str,
+    ) -> Any:
+        for attribute in dimension_element["attributes"]:
             if attribute["attributeId"] == attribute_unique_name:
                 return attribute
 
     @staticmethod
     def find_dimension_element_by_predicate(
-        dimension_elements: dict,
-        predicate: Callable[[dict], bool],
-    ) -> Optional[dict]:
+        dimension_elements: Any,
+        predicate: Callable[[Any], bool],
+    ) -> Any:
         for element in dimension_elements["elements"]:
             if predicate(element):
                 return element
 
     @staticmethod
     def find_dimension_element_by_attribute(
-        dimension_elements: dict,
+        dimension_elements: Any,
         attribute_unique_name: str,
         attribute_value: str
-    ) -> Optional[dict]:
-        def predicate(element):
-            attribute = Utils.find_attribute_by_unique_name(element, attribute_unique_name)
-            return attribute is not None and attribute["value"] == attribute_value
+    ) -> Any:
+        def predicate(element: Dict[str, Any]) -> bool:
+            attribute = Utils.find_attribute_by_unique_name(
+                element,
+                attribute_unique_name,
+            )
+            return all((
+                attribute is not None,
+                attribute["value"] == attribute_value,
+            ))
 
-        return Utils.find_dimension_element_by_predicate(dimension_elements, predicate)
+        return Utils.find_dimension_element_by_predicate(
+            dimension_elements,
+            predicate,
+        )
 
     @staticmethod
     def find_dimension_element_by_name(
-        dimension_elements: dict,
+        dimension_elements: Any,
         element_name: str,
-    ) -> Optional[dict]:
-        def predicate(element):
-            return element["name"] == element_name
+    ) -> Any:
+        def predicate(element: Dict[str, Any]) -> bool:
+            return bool(element["name"] == element_name)
 
-        return Utils.find_dimension_element_by_predicate(dimension_elements, predicate)
+        return Utils.find_dimension_element_by_predicate(
+            dimension_elements,
+            predicate,
+        )
 
     @staticmethod
     def find_dimension_element_by_id(
-        dimension_elements: dict,
+        dimension_elements: Any,
         element_id: int,
-    ) -> Optional[dict]:
-        def predicate(element):
-            return element["id"] == element_id
+    ) -> Any:
+        def predicate(element: Dict[str, Any]) -> bool:
+            return bool(element["id"] == element_id)
 
-        return Utils.find_dimension_element_by_predicate(dimension_elements, predicate)
+        return Utils.find_dimension_element_by_predicate(
+            dimension_elements,
+            predicate,
+        )
 
     @staticmethod
     def prepare_dimension_element_to_insert(
-        dimension_element: dict,
-        attribute_map: dict,
+        dimension_element: Any,
+        attribute_map: Dict[str, Any],
     ) -> None:
         for attribute in dimension_element["attributes"]:
             attribute_id = attribute["attributeId"]

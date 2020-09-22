@@ -9,14 +9,14 @@ class ApiV3:
     def __init__(
         self,
         connection: vi.Connection,
-        requests: Any = requests
+        requests: Any = requests,
     ) -> None:
         self.connection = connection
         self.requests = requests
 
     def emit_token(
         self,
-        emission_date: Optional[datetime] = None
+        emission_date: Optional[datetime] = None,
     ) -> vi.AuthorizationToken:
         if emission_date is None:
             emission_date = datetime.now()
@@ -32,7 +32,9 @@ class ApiV3:
         response = self.requests.post(
             url,
             headers={
-                "Authorization": "Basic dmlxdWJlYWRtaW5fcm9fY2xpZW50OjcmZEo1UldwVVMkLUVVQE1reHU=",
+                "Authorization":
+                    "Basic "
+                    "dmlxdWJlYWRtaW5fcm9fY2xpZW50OjcmZEo1UldwVVMkLUVVQE1reHU=",
                 "Content-Type": "application/x-www-form-urlencoded",
             },
             data={
@@ -54,7 +56,7 @@ class ApiV3:
             expires_at=expires_at,
         )
 
-    def version(self, token):
+    def version(self, token: vi.AuthorizationToken) -> Any:
         schema = self.connection.schema
         host = self.connection.host
         url = f"{schema}://{host}/viqube/version"
@@ -71,7 +73,11 @@ class ApiV3:
         assert response.status_code == 200, response.text
         return response.json()
 
-    def post_metadata_rawdata_query(self, token, query):
+    def post_metadata_rawdata_query(
+        self,
+        token: vi.AuthorizationToken,
+        query: Any,
+    ) -> Any:
         schema = self.connection.schema
         host = self.connection.host
         url = f"{schema}://{host}/viqube/metadata/rawdata/query"
