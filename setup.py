@@ -12,7 +12,7 @@ setup(
 
     install_requires=[],
     setup_requires=[
-        "dataclasses==0.7",
+        "dataclasses==0.6",
         "pytest==6.0.1",
         "pytest-runner==5.2",
         "pytest-cov==2.10.1",
