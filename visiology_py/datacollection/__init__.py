@@ -53,3 +53,19 @@ class ApiV2:
             secret=token["access_token"],
             expires_at=expires_at,
         )
+
+    def get_dimension_elements(
+        self,
+        token: AuthorizationToken,
+        dimension_unique_name: str,
+        filter: dict,
+    ) -> dict:
+        response = self.requests.get(
+            f"{schema}://{host}/datacollection/api/dimensions/{dimension_unique_name}/elements?getAll=true",
+            headers={
+                "Authorization": f"{token.type} {token.secret}",
+                "Content-Type": "application/json",
+                "X-API-VERSION": "2.0",
+            },
+            json=filter,
+        )

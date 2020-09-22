@@ -1,15 +1,18 @@
+from dataclasses import dataclass
 from typing import NamedTuple, Optional
 from datetime import datetime
 
 
-class Connection(NamedTuple):
+@dataclass
+class Connection:
     schema: str
     host: str
     username: str
     password: str
 
 
-class AuthorizationToken(NamedTuple):
+@dataclass
+class AuthorizationToken:
     type: str
     secret: str
     expires_at: datetime
