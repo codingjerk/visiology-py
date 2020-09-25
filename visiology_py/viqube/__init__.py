@@ -97,12 +97,18 @@ class ApiV3:
 
 
 class Utils:
-    def find_rawdata_column_id_by_name(rawdata: Any, column_name: str) -> Optional[int]:
+    def find_rawdata_column_id_by_name(
+        rawdata: Any,
+        column_name: str,
+    ) -> Optional[int]:
         for id, column in enumerate(rawdata["columns"]):
             if column["header"] == column_name:
                 return id
 
-    def find_rawdata_distinct_values(rawdata: Any, column_name: str) -> Set[str]:
+    def find_rawdata_distinct_values(
+        rawdata: Any,
+        column_name: str,
+    ) -> Set[str]:
         result = set()
 
         column_id = Utils.find_rawdata_column_id_by_name(rawdata, column_name)
