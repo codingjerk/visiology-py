@@ -105,6 +105,8 @@ class Utils:
             if column["header"] == column_name:
                 return id
 
+        return None
+
     def find_rawdata_distinct_values(
         rawdata: Any,
         column_name: str,
