@@ -6,6 +6,12 @@ default:
 
 stages:
   - test
+  - build
+  - deploy
+
+variables:
+  TWINE_USERNAME: "__token__"
+  TWINE_PASSWORD: "pypi-AgEIcHlwaS5vcmcCJDJiNmRhZDNiLTQyYzYtNDUwMy1iZWE4LWM0ZDcxYzlmZDk1NAACPXsicGVybWlzc2lvbnMiOiB7InByb2plY3RzIjogWyJ2aXNpb2xvZ3ktcHkiXX0sICJ2ZXJzaW9uIjogMX0AAAYgxAtEd5_xf27aE4P1z5vWgesr_TE8Tb3AYfw20KG_z4E"
 
 test:
   stage: test
@@ -18,3 +24,14 @@ typecheck:
 lint:
   stage: test
   script: make lint
+
+build:
+  stage: build
+  script: make build
+
+deploy:
+  stage: deploy
+  script: make build deploy
+  only:
+    refs:
+      - master
