@@ -1,5 +1,8 @@
 # visiology-py
 
+[![pipeline status](https://gitlab.com/polymedia-orv/orv/visiology-py/badges/master/pipeline.svg)](https://gitlab.com/polymedia-orv/orv/visiology-py/-/commits/master)
+[![PyPI version](https://badge.fury.io/py/visiology-py.png)](https://badge.fury.io/py/visiology-py)
+
 Высокоуровневые обертки и вспомогательные функции для работы с API Visiology: ViQube, ViQube Admin и Datacollection
 
 ## Установка
@@ -48,7 +51,7 @@ dimensions = api.get_dimension_elements(token, "dim_Status")
 
 ### Общая информация
 
-По-возможности, пишите тесты и тайп-хинты, проверяйте код перед тем как коммитить и не коммитьте в мастер.
+По-возможности, пишите тесты и тайп-хинты, проверяйте код перед тем как коммитить, коммитьте в develop/feature-ветки и делайте merge-реквесты в master.
 
 Если нужно использовать внесённые изменения, через pip можно поставить пакет из локальной директории и продолжать редактирование кода:
 
