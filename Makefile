@@ -6,7 +6,7 @@ test:
 
 lint:
 	@echo [ === LINT === ]
-	@python3 -m pycodestyle . --exclude venv,tests,setup.py
+	@python3 -m pycodestyle . --exclude venv,tests,setup.py,build,dist,.eggs
 
 typecheck:
 	@echo [ === TYPECHECK === ]
@@ -14,8 +14,9 @@ typecheck:
 
 build:
 	@echo [ === BUILD === ]
-	@python3 setup.py sdist bdist
+	@python3 setup.py -q sdist bdist
 
 deploy:
 	@echo [ === DEPLOY === ]
-	@python3 -m twine upload dist/*
+	@rm -rf dist/visiology-py-*.linux-x86_64.tar.gz
+	@python3 -m twine upload dist/visiology-py-*.tar.gz

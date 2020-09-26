@@ -5,11 +5,13 @@ from setuptools import find_packages, setup
 setup(
     name="visiology-py",
     packages=find_packages(include="visiology_py"),
-    version="0.1.1",
+    version="0.1.3",
     description="High level wrappers for Visiology APIs: Datacollection, ViQube and ViQube admin",
-    long_description="README.md",
+    long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
+    url="https://gitlab.com/polymedia-orv/orv/visiology-py",
     author="Denis <codingjerk> Gruzdev",
+    author_email="codingjerk@gmail.com",
     license="MIT",
 
     install_requires=[],
