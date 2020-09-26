@@ -5,8 +5,10 @@ from setuptools import find_packages, setup
 setup(
     name="visiology-py",
     packages=find_packages(include="visiology_py"),
-    version="0.1.0",
+    version="0.1.1",
     description="High level wrappers for Visiology APIs: Datacollection, ViQube and ViQube admin",
+    long_description="README.md",
+    long_description_content_type="text/markdown",
     author="Denis <codingjerk> Gruzdev",
     license="MIT",
 
