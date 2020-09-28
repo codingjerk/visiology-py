@@ -29,9 +29,9 @@ connection = vi.Connection(
 api = dc.ApiV2(connection)
 token = api.emit_token()
 
-dimensions = api.get_dimension_elements(token, "dim_Status")
+elements = api.get_dimension_elements(token, "dim_Status")
 
-# ... работаем с dimensions ...
+# ... работаем с elements ...
 ```
 
 ## Внесение изменений в библиотеку
