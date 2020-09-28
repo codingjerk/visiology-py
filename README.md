@@ -62,6 +62,7 @@ result = api.post_metadata_rawdata_query(token, {
 })
 
 # ... работаем с result ...
+```
 
 ## Внесение изменений в библиотеку
 
