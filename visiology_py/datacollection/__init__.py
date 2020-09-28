@@ -184,6 +184,23 @@ class ApiV2:
             expires_at=expires_at,
         )
 
+    def get_dimension_attributes(
+        self,
+        token: vi.AuthorizationToken,
+        dimension_unique_name: str,
+    ) -> Any:
+        schema = self.connection.schema
+        host = self.connection.host
+        response = self.requests.get(
+            self.__url(
+                f"/dimensions/{dimension_unique_name}/attributes?getAll=true"
+            ),
+            headers=self.__headers(token),
+        )
+
+        assert response.status_code == 200, response.text
+        return response.json()
+
     def get_dimension_elements(
         self,
         token: vi.AuthorizationToken,
