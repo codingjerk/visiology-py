@@ -34,6 +34,35 @@ elements = api.get_dimension_elements(token, "dim_Status")
 # ... работаем с elements ...
 ```
 
+### ViQube
+
+#### Получение 
+
+```
+import visiology_py as vi
+import visiology_py.viqube as vq
+
+connection = vi.Connection(...)
+
+api = vq.ApiV3(connection)
+token = api.emit_token()
+
+# Пример запроса, ГП вымышленная, для наглядности использованы русифицированные имена вместо транслита
+result = api.post_metadata_rawdata_query(token, {
+    "database": "1",
+    "mgid": "Цены",
+
+    "columns": [
+        { "mid": "Цена без НДС" },
+        { "mid": "Цена с НДС" },
+
+        { "attrid": "Имя продукта", "dlid": "Продукты" },
+        { "attrid": "Имя магазина", "dlid": "Магазины" },
+    ],
+})
+
+# ... работаем с result ...
+
 ## Внесение изменений в библиотеку
 
 ### Подготовка к разработке
