@@ -36,7 +36,7 @@ elements = api.get_dimension_elements(token, "dim_Status")
 
 ### ViQube
 
-#### Получение 
+#### Получение показателей из группы показателей
 
 ```
 import visiology_py as vi
