@@ -29,7 +29,7 @@ connection = vi.Connection(
 api = dc.ApiV2(connection)
 token = api.emit_token()
 
-elements = api.get_dimension_elements(token, "dim_Status")
+elements = api.get_dimension_elements("dim_Status", {}, token=token)
 
 # ... работаем с elements ...
 ```
@@ -48,18 +48,21 @@ api = vq.ApiV3(connection)
 token = api.emit_token()
 
 # Пример запроса, ГП вымышленная, для наглядности использованы русифицированные имена вместо транслита
-result = api.post_metadata_rawdata_query(token, {
-    "database": "1",
-    "mgid": "Цены",
+result = api.post_metadata_rawdata_query(
+    {
+        "database": "1",
+        "mgid": "Цены",
 
-    "columns": [
-        { "mid": "Цена без НДС" },
-        { "mid": "Цена с НДС" },
+        "columns": [
+            { "mid": "Цена без НДС" },
+            { "mid": "Цена с НДС" },
 
-        { "attrid": "Имя продукта", "dlid": "Продукты" },
-        { "attrid": "Имя магазина", "dlid": "Магазины" },
-    ],
-})
+            { "attrid": "Имя продукта", "dlid": "Продукты" },
+            { "attrid": "Имя магазина", "dlid": "Магазины" },
+        ],
+    },
+    token=token,
+)
 
 # ... работаем с result ...
 ```
