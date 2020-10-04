@@ -1,5 +1,7 @@
 all: test lint typecheck build
 
+.PHONY: test lint typecheck build deploy all
+
 test:
 	@echo [ === TEST === ]
 	@python3 -m pytest --quiet
