@@ -8,7 +8,7 @@ def test_datacollection_autoemission() -> None:
     api.get_dimension_elements("dim_Test", {})
     api.get_dimension_elements("dim_Test", {})
 
-    calls = [call.args[:2] for call in requests.request.call_args_list]
+    calls = [call[0][:2] for call in requests.request.call_args_list]
 
     assert calls == [
         ("POST", "schema://host/idsrv/connect/token"),
@@ -24,7 +24,7 @@ def test_viqube_autoemission() -> None:
     api.post_metadata_rawdata_query({})
     api.post_metadata_rawdata_query({})
 
-    calls = [call.args[:2] for call in requests.request.call_args_list]
+    calls = [call[0][:2] for call in requests.request.call_args_list]
 
     assert calls == [
         ("POST", "schema://host/idsrv/connect/token"),
