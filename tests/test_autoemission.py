@@ -16,6 +16,7 @@ def test_datacollection_autoemission() -> None:
         ("GET", "schema://host/datacollection/api/dimensions/dim_Test/elements?getAll=true"),
     ]
 
+
 def test_viqube_autoemission() -> None:
     requests = fakes.requests(returns_token=True)
     api = fakes.viqube_api_v3(requests=requests)

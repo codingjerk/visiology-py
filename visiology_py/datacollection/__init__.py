@@ -32,7 +32,7 @@ class ApiV1(vi.BaseApi):
 
     def get_dimension_attributes(
         self,
-        dimension_id: str,
+        dimension_id: int,
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
         return self._authorized_request(
@@ -44,7 +44,7 @@ class ApiV1(vi.BaseApi):
 
     def get_dimension_elements(
         self,
-        dimension_id: str,
+        dimension_id: int,
         filter: Any,
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
@@ -57,7 +57,7 @@ class ApiV1(vi.BaseApi):
 
     def put_dimension_elements(
         self,
-        dimension_id: str,
+        dimension_id: int,
         elements: List[Any],
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
@@ -70,7 +70,7 @@ class ApiV1(vi.BaseApi):
 
     def post_dimension_elements(
         self,
-        dimension_id: str,
+        dimension_id: int,
         elements: List[Any],
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
@@ -83,7 +83,7 @@ class ApiV1(vi.BaseApi):
 
     def delete_dimension_elements(
         self,
-        dimension_id: str,
+        dimension_id: int,
         filter: Any,
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
