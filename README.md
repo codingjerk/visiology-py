@@ -25,11 +25,8 @@ connection = vi.Connection(
     username="<USERNAME>",
     password="<PASSWORD>",
 )
-
 api = dc.ApiV2(connection)
-token = api.emit_token()
-
-elements = api.get_dimension_elements("dim_Status", {}, token=token)
+elements = api.get_dimension_elements("dim_Status", {})
 
 # ... работаем с elements ...
 ```
@@ -43,9 +40,7 @@ import visiology_py as vi
 import visiology_py.viqube as vq
 
 connection = vi.Connection(...)
-
 api = vq.ApiV3(connection)
-token = api.emit_token()
 
 # Пример запроса, ГП вымышленная, для наглядности использованы русифицированные имена вместо транслита
 result = api.post_metadata_rawdata_query(
@@ -61,11 +56,16 @@ result = api.post_metadata_rawdata_query(
             { "attrid": "Имя магазина", "dlid": "Магазины" },
         ],
     },
-    token=token,
 )
 
 # ... работаем с result ...
 ```
+
+### Автоматический выпуск токена
+
+При использовании методов API, требующих аутентификации (передачи токена), его можно не указывать.
+
+В таком случае токен будет выпущен (emit) автоматически и он же продолжит использоваться до тех пор, пока будет оставаться действительным. Токен будет выпускаться только по необходимости (не каждый запрос).
 
 ## Внесение изменений в библиотеку
 

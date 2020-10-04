@@ -5,296 +5,184 @@ import visiology_py as vi
 import requests
 
 
-class ApiV1:
+class ApiV1(vi.BaseApi):
     def __init__(
         self,
         connection: vi.Connection,
-        requests: Any = requests
+        requests: Any = requests,
     ) -> None:
-        self.connection = connection
-        self.requests = requests
-
-    def emit_token(
-        self,
-        emission_date: Optional[datetime] = None
-    ) -> vi.AuthorizationToken:
-        if emission_date is None:
-            emission_date = datetime.now()
-
-        scopes = [
-            "openid", "profile", "email",
-            "roles", "viewer_api", "core_logic_facade",
-        ]
-        schema = self.connection.schema
-        host = self.connection.host
-        url = f"{schema}://{host}/idsrv/connect/token"
-
-        response = self.requests.post(
-            url,
-            headers={
+        super().__init__(
+            api_prefix="/datacollection/api",
+            api_version="1.0",
+            authorization_scopes=[
+                "openid",
+                "profile",
+                "email",
+                "roles",
+                "viewer_api",
+                "core_logic_facade",
+            ],
+            authorization_headers={
                 "Authorization": "Basic cm8uY2xpZW50OmFtV25Cc3B9dipvfTYkSQ==",
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            data={
-                "grant_type": "password",
-                "scope": " ".join(scopes),
-                "response_type": "id_token token",
-                "username": self.connection.username,
-                "password": self.connection.password,
-            },
-        )
-
-        token = response.json()
-        expires_in = token["expires_in"]
-        expires_at = emission_date + timedelta(seconds=expires_in)
-
-        return vi.AuthorizationToken(
-            type=token["token_type"],
-            secret=token["access_token"],
-            expires_at=expires_at,
+            connection=connection,
+            requests=requests,
         )
 
     def get_dimension_attributes(
         self,
-        token: vi.AuthorizationToken,
-        dimension_id: int,
+        dimension_id: str,
+        token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
-        schema = self.connection.schema
-        host = self.connection.host
-        response = self.requests.get(
-            self.__url(
-                f"/dimensions/{dimension_id}/attributes?getAll=true"
-            ),
-            headers=self.__headers(token),
+        return self._authorized_request(
+            "GET",
+            f"/dimensions/{dimension_id}/attributes?getAll=true",
+            json=None,
+            token=token,
         )
-
-        assert response.status_code == 200, response.text
-        return response.json()
 
     def get_dimension_elements(
         self,
-        token: vi.AuthorizationToken,
-        dimension_id: int,
+        dimension_id: str,
         filter: Any,
+        token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
-        schema = self.connection.schema
-        host = self.connection.host
-        response = self.requests.get(
-            self.__url(f"/dimensions/{dimension_id}/elements?getAll=true"),
-            headers=self.__headers(token),
+        return self._authorized_request(
+            "GET",
+            f"/dimensions/{dimension_id}/elements?getAll=true",
             json=filter,
+            token=token,
         )
-
-        assert response.status_code == 200, response.text
-        return response.json()
 
     def put_dimension_elements(
         self,
-        token: vi.AuthorizationToken,
-        dimension_id: int,
+        dimension_id: str,
         elements: List[Any],
+        token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
-        schema = self.connection.schema
-        host = self.connection.host
-        response = self.requests.put(
-            self.__url(f"/dimensions/{dimension_id}/elements"),
-            headers=self.__headers(token),
+        return self._authorized_request(
+            "PUT",
+            f"/dimensions/{dimension_id}/elements",
             json=elements,
+            token=token,
         )
-
-        assert response.status_code == 200, response.text
-        return response.json()
 
     def post_dimension_elements(
         self,
-        token: vi.AuthorizationToken,
-        dimension_id: int,
+        dimension_id: str,
         elements: List[Any],
+        token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
-        response = self.requests.post(
-            self.__url(f"/dimensions/{dimension_id}/elements"),
-            headers=self.__headers(token),
+        return self._authorized_request(
+            "POST",
+            f"/dimensions/{dimension_id}/elements",
             json=elements,
+            token=token,
         )
-
-        assert response.status_code == 200, response.text
-        return response.json()
 
     def delete_dimension_elements(
         self,
-        token: vi.AuthorizationToken,
-        dimension_id: int,
-        filter: List[Any],
+        dimension_id: str,
+        filter: Any,
+        token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
-        response = self.requests.delete(
-            self.__url(f"/dimensions/{dimension_id}/elements"),
-            headers=self.__headers(token),
+        return self._authorized_request(
+            "DELETE",
+            f"/dimensions/{dimension_id}/elements",
             json=filter,
+            token=token,
         )
 
-        assert response.status_code == 200, response.text
-        return response.json()
 
-    def __headers(self, token: vi.AuthorizationToken) -> Dict[str, str]:
-        return {
-            "Authorization": f"{token.type} {token.secret}",
-            "Content-Type": "application/json",
-            "X-API-VERSION": "1.0",
-        }
-
-    def __url(self, path: str) -> str:
-        schema = self.connection.schema
-        host = self.connection.host
-        return f"{schema}://{host}/datacollection/api{path}"
-
-
-class ApiV2:
+class ApiV2(vi.BaseApi):
     def __init__(
         self,
         connection: vi.Connection,
-        requests: Any = requests
+        requests: Any = requests,
     ) -> None:
-        self.connection = connection
-        self.requests = requests
-
-    def emit_token(
-        self,
-        emission_date: Optional[datetime] = None
-    ) -> vi.AuthorizationToken:
-        if emission_date is None:
-            emission_date = datetime.now()
-
-        scopes = [
-            "openid",
-            "profile",
-            "email",
-            "roles",
-            "viewer_api",
-            "core_logic_facade",
-        ]
-        schema = self.connection.schema
-        host = self.connection.host
-        url = f"{schema}://{host}/idsrv/connect/token"
-
-        response = self.requests.post(
-            url,
-            headers={
+        super().__init__(
+            api_prefix="/datacollection/api",
+            api_version="2.0",
+            authorization_scopes=[
+                "openid",
+                "profile",
+                "email",
+                "roles",
+                "viewer_api",
+                "core_logic_facade",
+            ],
+            authorization_headers={
                 "Authorization": "Basic cm8uY2xpZW50OmFtV25Cc3B9dipvfTYkSQ==",
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            data={
-                "grant_type": "password",
-                "scope": " ".join(scopes),
-                "response_type": "id_token token",
-                "username": self.connection.username,
-                "password": self.connection.password,
-            },
-        )
-
-        token = response.json()
-        expires_in = token["expires_in"]
-        expires_at = emission_date + timedelta(seconds=expires_in)
-
-        return vi.AuthorizationToken(
-            type=token["token_type"],
-            secret=token["access_token"],
-            expires_at=expires_at,
+            connection=connection,
+            requests=requests,
         )
 
     def get_dimension_attributes(
         self,
-        token: vi.AuthorizationToken,
         dimension_unique_name: str,
+        token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
-        schema = self.connection.schema
-        host = self.connection.host
-        response = self.requests.get(
-            self.__url(
-                f"/dimensions/{dimension_unique_name}/attributes?getAll=true"
-            ),
-            headers=self.__headers(token),
+        return self._authorized_request(
+            "GET",
+            f"/dimensions/{dimension_unique_name}/attributes?getAll=true",
+            json=None,
+            token=token,
         )
-
-        assert response.status_code == 200, response.text
-        return response.json()
 
     def get_dimension_elements(
         self,
-        token: vi.AuthorizationToken,
         dimension_unique_name: str,
         filter: Any,
+        token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
-        schema = self.connection.schema
-        host = self.connection.host
-        response = self.requests.get(
-            self.__url(
-                f"/dimensions/{dimension_unique_name}/elements?getAll=true"
-            ),
-            headers=self.__headers(token),
+        return self._authorized_request(
+            "GET",
+            f"/dimensions/{dimension_unique_name}/elements?getAll=true",
             json=filter,
+            token=token,
         )
-
-        assert response.status_code == 200, response.text
-        return response.json()
 
     def put_dimension_elements(
         self,
-        token: vi.AuthorizationToken,
         dimension_unique_name: str,
         elements: List[Any],
+        token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
-        schema = self.connection.schema
-        host = self.connection.host
-        response = self.requests.put(
-            self.__url(f"/dimensions/{dimension_unique_name}/elements"),
-            headers=self.__headers(token),
+        return self._authorized_request(
+            "PUT",
+            f"/dimensions/{dimension_unique_name}/elements",
             json=elements,
+            token=token,
         )
-
-        assert response.status_code == 200, response.text
-        return response.json()
 
     def post_dimension_elements(
         self,
-        token: vi.AuthorizationToken,
         dimension_unique_name: str,
         elements: List[Any],
+        token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
-        response = self.requests.post(
-            self.__url(f"/dimensions/{dimension_unique_name}/elements"),
-            headers=self.__headers(token),
+        return self._authorized_request(
+            "POST",
+            f"/dimensions/{dimension_unique_name}/elements",
             json=elements,
+            token=token,
         )
-
-        assert response.status_code == 200, response.text
-        return response.json()
 
     def delete_dimension_elements(
         self,
-        token: vi.AuthorizationToken,
         dimension_unique_name: str,
-        filter: List[Any],
+        filter: Any,
+        token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
-        response = self.requests.delete(
-            self.__url(f"/dimensions/{dimension_unique_name}/elements"),
-            headers=self.__headers(token),
+        return self._authorized_request(
+            "DELETE",
+            f"/dimensions/{dimension_unique_name}/elements",
             json=filter,
+            token=token,
         )
-
-        assert response.status_code == 200, response.text
-        return response.json()
-
-    def __headers(self, token: vi.AuthorizationToken) -> Dict[str, str]:
-        return {
-            "Authorization": f"{token.type} {token.secret}",
-            "Content-Type": "application/json",
-            "X-API-VERSION": "2.0",
-        }
-
-    def __url(self, path: str) -> str:
-        schema = self.connection.schema
-        host = self.connection.host
-        return f"{schema}://{host}/datacollection/api{path}"
 
 
 class Utils:

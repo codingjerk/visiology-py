@@ -21,7 +21,7 @@ def test_datacollection_basics() -> None:
 def test_datacollection_token_emission() -> None:
     requests = MagicMock()
     requests.post = MagicMock()
-    requests.post().json = MagicMock(return_value={
+    requests.request().json = MagicMock(return_value={
         "token_type": "Bearer",
         "access_token": "SECRET",
         "expires_in": 10,
