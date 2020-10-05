@@ -6,7 +6,10 @@ setup(
     name="visiology-py",
     packages=find_packages(include="visiology_py"),
     version="0.2.0",
-    description="High level wrappers for Visiology APIs: Datacollection, ViQube and ViQube admin",
+    description=(
+        "High level wrappers for Visiology APIs: "
+        "Datacollection, ViQube and ViQube admin"
+    ),
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://gitlab.com/polymedia-orv/orv/visiology-py",

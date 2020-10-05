@@ -4,7 +4,7 @@ Common authorization token used for all authorized requests
 
 
 from dataclasses import dataclass
-from typing import Optional, Dict
+from typing import Dict
 from datetime import datetime
 
 

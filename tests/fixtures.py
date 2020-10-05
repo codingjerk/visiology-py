@@ -1,6 +1,6 @@
 import pytest
 from typing import Callable, Any
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 from datetime import datetime, timedelta
 
 import visiology_py as vi

@@ -3,14 +3,14 @@ import visiology_py.datacollection as dc
 
 from typing import Callable, Any
 from unittest.mock import Mock, patch
-from datetime import datetime, timedelta
+from datetime import datetime
 from tests.fixtures import *
 
 
 def test_datacollection_basics(
     connection: vi.Connection,
 ) -> None:
-    api = dc.ApiV2(connection)
+    dc.ApiV2(connection)
 
 
 def test_datacollection_token_emission(
