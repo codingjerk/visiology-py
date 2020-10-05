@@ -1,5 +1,4 @@
 from typing import Any, Optional, Callable, List, Dict
-from datetime import datetime, timedelta
 
 import visiology_py as vi
 import requests
