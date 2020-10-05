@@ -1,3 +1,8 @@
+"""
+Classes and methods to work with ViQube API
+"""
+
+
 from typing import Any, Optional, Set
 from datetime import datetime, timedelta
 

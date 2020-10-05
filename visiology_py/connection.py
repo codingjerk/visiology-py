@@ -1,3 +1,8 @@
+"""
+Connection class which represents API credentials
+"""
+
+
 from dataclasses import dataclass
 
 

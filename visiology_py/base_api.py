@@ -1,3 +1,8 @@
+"""
+Base API class including methods shared between all APIs
+"""
+
+
 from typing import Any, Optional, List, Dict
 from datetime import datetime, timedelta
 
