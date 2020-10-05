@@ -6,14 +6,12 @@ Classes and methods to work with DataCollection API
 from typing import Any, Optional, Callable, List, Dict
 
 import visiology_py as vi
-import requests
 
 
 class ApiV1(vi.BaseApi):
     def __init__(
         self,
         connection: vi.Connection,
-        requests: Any = requests,
     ) -> None:
         super().__init__(
             api_prefix="/datacollection/api",
@@ -31,7 +29,6 @@ class ApiV1(vi.BaseApi):
                 "Content-Type": "application/x-www-form-urlencoded",
             },
             connection=connection,
-            requests=requests,
         )
 
     def get_dimension_attributes(
@@ -103,7 +100,6 @@ class ApiV2(vi.BaseApi):
     def __init__(
         self,
         connection: vi.Connection,
-        requests: Any = requests,
     ) -> None:
         super().__init__(
             api_prefix="/datacollection/api",
@@ -121,7 +117,6 @@ class ApiV2(vi.BaseApi):
                 "Content-Type": "application/x-www-form-urlencoded",
             },
             connection=connection,
-            requests=requests,
         )
 
     def get_dimension_attributes(

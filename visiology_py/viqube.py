@@ -6,14 +6,12 @@ Classes and methods to work with ViQube API
 from typing import Any, Optional, Set
 
 import visiology_py as vi
-import requests
 
 
 class ApiV3(vi.BaseApi):
     def __init__(
         self,
         connection: vi.Connection,
-        requests: Any = requests,
     ) -> None:
         super().__init__(
             api_prefix="/viqube",
@@ -34,7 +32,6 @@ class ApiV3(vi.BaseApi):
                 "Content-Type": "application/x-www-form-urlencoded",
             },
             connection=connection,
-            requests=requests,
         )
 
     def version(

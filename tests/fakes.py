@@ -10,18 +10,12 @@ def datacollection_api_v2(**kwargs: Any) -> dc.ApiV2:
     if "connection" not in kwargs:
         kwargs["connection"] = connection()
 
-    if "requests" not in kwargs:
-        kwargs["requests"] = requests()
-
     return dc.ApiV2(**kwargs)
 
 
 def viqube_api_v3(**kwargs: Any) -> vq.ApiV3:
     if "connection" not in kwargs:
         kwargs["connection"] = connection()
-
-    if "requests" not in kwargs:
-        kwargs["requests"] = requests()
 
     return vq.ApiV3(**kwargs)
 

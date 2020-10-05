@@ -9,6 +9,8 @@ from datetime import datetime, timedelta
 from visiology_py.connection import Connection
 from visiology_py.authorization_token import AuthorizationToken
 
+import requests
+
 
 class BaseApi:
     def __init__(
@@ -18,14 +20,12 @@ class BaseApi:
         authorization_scopes: List[str],
         authorization_headers: Dict[str, str],
         connection: Connection,
-        requests: Any,
     ) -> None:
         self._api_prefix = api_prefix
         self._api_version = api_version
         self._authorization_scopes = authorization_scopes
         self._authorization_headers = authorization_headers
         self._connection = connection
-        self._requests = requests
 
         self._token: Optional[AuthorizationToken] = None
 
@@ -48,7 +48,7 @@ class BaseApi:
     def emit_token(
         self,
     ) -> AuthorizationToken:
-        response = self._requests.request(
+        response = requests.request(
             "POST",
             self._url("/idsrv/connect/token"),
             headers=self._authorization_headers,
@@ -89,7 +89,7 @@ class BaseApi:
         if token is None:
             token = self._ensure_token()
 
-        response = self._requests.request(
+        response = requests.request(
             method,
             self._prefixed_url(path),
             headers=self._headers(token),
