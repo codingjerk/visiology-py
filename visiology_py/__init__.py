@@ -23,6 +23,11 @@ class AuthorizationToken:
 
         return at_date >= self.expires_at
 
+    def to_authorization_header(self) -> Dict[str, str]:
+        return {
+            "Authorization": f"{self.type} {self.secret}",
+        }
+
 
 class BaseApi:
     def __init__(
@@ -54,7 +59,7 @@ class BaseApi:
 
     def _headers(self, token: AuthorizationToken) -> Dict[str, str]:
         return {
-            "Authorization": f"{token.type} {token.secret}",
+            **token.to_authorization_header(),
             "Content-Type": "application/json",
             "X-API-VERSION": self._api_version,
         }
