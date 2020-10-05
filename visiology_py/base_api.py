@@ -47,11 +47,7 @@ class BaseApi:
 
     def emit_token(
         self,
-        emission_date: Optional[datetime] = None,
     ) -> AuthorizationToken:
-        if emission_date is None:
-            emission_date = datetime.now()
-
         response = self._requests.request(
             "POST",
             self._url("/idsrv/connect/token"),
@@ -67,7 +63,7 @@ class BaseApi:
 
         token = response.json()
         expires_in = token["expires_in"]
-        expires_at = emission_date + timedelta(seconds=expires_in)
+        expires_at = datetime.now() + timedelta(seconds=expires_in)
 
         return AuthorizationToken(
             type=token["token_type"],
@@ -77,10 +73,9 @@ class BaseApi:
 
     def _ensure_token(
         self,
-        at_date: Optional[datetime],
     ) -> AuthorizationToken:
-        if self._token is None or self._token.is_expired(at_date):
-            self._token = self.emit_token(at_date)
+        if self._token is None or self._token.is_expired():
+            self._token = self.emit_token()
 
         return self._token
 
@@ -90,10 +85,9 @@ class BaseApi:
         path: str,
         json: Any,
         token: Optional[AuthorizationToken] = None,
-        at_date: Optional[datetime] = None,
     ) -> Any:
         if token is None:
-            token = self._ensure_token(at_date)
+            token = self._ensure_token()
 
         response = self._requests.request(
             method,

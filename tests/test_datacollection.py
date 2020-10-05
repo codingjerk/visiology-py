@@ -1,8 +1,10 @@
 import visiology_py as vi
 import visiology_py.datacollection as dc
 
-from unittest.mock import MagicMock
+from typing import Callable
+from unittest.mock import Mock, patch
 from datetime import datetime, timedelta
+from tests.fixtures import *
 
 
 test_connection = vi.Connection(
@@ -14,24 +16,32 @@ test_connection = vi.Connection(
 
 
 def test_datacollection_basics() -> None:
-    requests = MagicMock()
+    requests = Mock()
     api = dc.ApiV2(test_connection, requests)
 
 
-def test_datacollection_token_emission() -> None:
-    requests = MagicMock()
-    requests.post = MagicMock()
-    requests.request().json = MagicMock(return_value={
+def test_datacollection_token_emission(
+    expires_in: timedelta,
+    emission_date: datetime,
+    expire_date: datetime,
+    fixed_datetime: Callable[[datetime], Mock],
+) -> None:
+    requests = Mock()
+    requests.post = Mock()
+    requests.request().json = Mock(return_value={
         "token_type": "Bearer",
         "access_token": "SECRET",
-        "expires_in": 10,
+        "expires_in": expires_in.total_seconds(),
     })
 
-    emission_date = datetime(year=2020, month=3, day=20, hour=13, minute=31, second=20)
-
     api = dc.ApiV2(test_connection, requests)
-    token = api.emit_token(emission_date)
 
-    assert token.type == "Bearer"
-    assert token.secret == "SECRET"
-    assert token.expires_at == emission_date + timedelta(seconds=10)
+    with patch(
+        "visiology_py.base_api.datetime",
+        fixed_datetime(emission_date),
+    ):
+        token = api.emit_token()
+
+        assert token.type == "Bearer"
+        assert token.secret == "SECRET"
+        assert token.expires_at == expire_date

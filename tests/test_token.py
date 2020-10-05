@@ -1,14 +1,31 @@
 import visiology_py as vi
-from datetime import datetime, timedelta
+
+from typing import Callable
+from datetime import datetime
+from unittest.mock import patch, Mock
+from tests.fixtures import *
 
 
-def test_token_expires() -> None:
-    emission_date = datetime(2020, 1, 2, 3, 4, 5)
+def test_token_expires(
+    expire_date: datetime,
+    before_expire_date: datetime,
+    after_expire_date: datetime,
+    fixed_datetime: Callable[[datetime], Mock],
+) -> None:
     token = vi.AuthorizationToken(
         type="Something",
         secret="Anything",
-        expires_at=emission_date + timedelta(seconds=10),
+        expires_at=expire_date,
     )
 
-    assert token.is_expired(at_date=emission_date + timedelta(seconds=20))
-    assert not token.is_expired(at_date=emission_date + timedelta(seconds=5))
+    with patch(
+        "visiology_py.authorization_token.datetime",
+        fixed_datetime(after_expire_date),
+    ):
+        assert token.is_expired()
+
+    with patch(
+        "visiology_py.authorization_token.datetime",
+        fixed_datetime(before_expire_date),
+    ):
+        assert not token.is_expired()

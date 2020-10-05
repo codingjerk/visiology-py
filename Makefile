@@ -12,7 +12,7 @@ lint:
 
 typecheck:
 	@echo [ === TYPECHECK === ]
-	@python3 -m mypy --strict --pretty --no-error-summary --ignore-missing-imports visiology_py tests
+	@python3 -m mypy --strict --pretty --allow-untyped-decorators --no-error-summary --ignore-missing-imports visiology_py tests
 
 build:
 	@echo [ === BUILD === ]
