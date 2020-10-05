@@ -7,19 +7,14 @@ from datetime import datetime, timedelta
 from tests.fixtures import *
 
 
-test_connection = vi.Connection(
-    schema="https",
-    host="whatever.polymedia.ru",
-    username="Some user",
-    password="Any password",
-)
-
-
-def test_datacollection_basics() -> None:
-    api = dc.ApiV2(test_connection)
+def test_datacollection_basics(
+    connection: vi.Connection,
+) -> None:
+    api = dc.ApiV2(connection)
 
 
 def test_datacollection_token_emission(
+    datacollection_api_v2: dc.ApiV2,
     emission_date: datetime,
     expire_date: datetime,
     fixed_datetime: Callable[[datetime], Mock],
@@ -34,9 +29,7 @@ def test_datacollection_token_emission(
         fixed_datetime(emission_date),
     )
     def do_test() -> None:
-        api = dc.ApiV2(test_connection)
-
-        token = api.emit_token()
+        token = datacollection_api_v2.emit_token()
 
         assert token.type == "Bearer"
         assert token.secret == "SECRET"

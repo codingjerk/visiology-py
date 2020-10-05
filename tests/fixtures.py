@@ -1,7 +1,11 @@
 import pytest
 from typing import Callable, Any
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 from datetime import datetime, timedelta
+
+import visiology_py as vi
+import visiology_py.datacollection as dc
+import visiology_py.viqube as vq
 
 
 @pytest.fixture
@@ -73,3 +77,27 @@ def requests(
     result.request = Mock(side_effect=request)
 
     return result
+
+
+@pytest.fixture
+def connection() -> vi.Connection:
+    return vi.Connection(
+        schema="schema",
+        host="host",
+        username="username",
+        password="password",
+    )
+
+
+@pytest.fixture
+def datacollection_api_v2(
+    connection: vi.Connection,
+) -> dc.ApiV2:
+    return dc.ApiV2(connection)
+
+
+@pytest.fixture
+def viqube_api_v3(
+    connection: vi.Connection,
+) -> vq.ApiV3:
+    return vq.ApiV3(connection)
