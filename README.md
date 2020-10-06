@@ -26,7 +26,7 @@ connection = vi.Connection(
     password="<PASSWORD>",
 )
 api = dc.ApiV2(connection)
-elements = api.get_dimension_elements("dim_Status", {})
+elements = api.get_dimension_elements("dim_Status", None)
 
 # ... работаем с elements ...
 ```
