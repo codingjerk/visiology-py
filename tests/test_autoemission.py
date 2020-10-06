@@ -1,8 +1,8 @@
-from tests.fixtures import *
-from unittest.mock import patch, Mock
+from unittest.mock import Mock, patch
 
 import visiology_py.datacollection as dc
 import visiology_py.viqube as vq
+from tests.fixtures import *
 
 
 def test_datacollection_autoemission(

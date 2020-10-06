@@ -3,7 +3,7 @@ Classes and methods to work with DataCollection API
 """
 
 
-from typing import Any, Optional, Callable, List, Dict
+from typing import Any, Callable, Dict, List, Optional
 
 import visiology_py as vi
 

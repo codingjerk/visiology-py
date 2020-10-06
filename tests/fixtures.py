@@ -1,7 +1,8 @@
-import pytest
-from typing import Callable, Any
-from unittest.mock import Mock
 from datetime import datetime, timedelta
+from typing import Any, Callable
+from unittest.mock import Mock
+
+import pytest
 
 import visiology_py as vi
 import visiology_py.datacollection as dc

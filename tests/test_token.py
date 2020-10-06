@@ -1,8 +1,8 @@
-import visiology_py as vi
-
-from typing import Callable
 from datetime import datetime
-from unittest.mock import patch, Mock
+from typing import Callable
+from unittest.mock import Mock, patch
+
+import visiology_py as vi
 from tests.fixtures import *
 
 

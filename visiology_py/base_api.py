@@ -3,13 +3,13 @@ Base API class including methods shared between all APIs
 """
 
 
-from typing import Any, Optional, List, Dict
 from datetime import datetime, timedelta
-
-from visiology_py.connection import Connection
-from visiology_py.authorization_token import AuthorizationToken
+from typing import Any, Dict, List, Optional
 
 import requests
+
+from visiology_py.authorization_token import AuthorizationToken
+from visiology_py.connection import Connection
 
 
 class BaseApi:

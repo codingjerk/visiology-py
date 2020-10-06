@@ -1,9 +1,9 @@
+from datetime import datetime
+from typing import Any, Callable
+from unittest.mock import Mock, patch
+
 import visiology_py as vi
 import visiology_py.datacollection as dc
-
-from typing import Callable, Any
-from unittest.mock import Mock, patch
-from datetime import datetime
 from tests.fixtures import *
 
 
