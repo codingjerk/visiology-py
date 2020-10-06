@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 setup(
     name="visiology-py",
     packages=find_packages(include="visiology_py"),
-    version="0.2.0",
+    version="0.3.0",
     description=(
         "High level wrappers for Visiology APIs: "
         "Datacollection, ViQube and ViQube admin"
@@ -20,6 +20,7 @@ setup(
     install_requires=[],
     setup_requires=[
         "dataclasses==0.6",
+        "funcy==1.15",
         "mypy==0.782",
         "pycodestyle==2.6.0",
         "pytest-cov==2.10.1",
