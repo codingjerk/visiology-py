@@ -1,6 +1,6 @@
-all: test lint typecheck build
+all: test lint typecheck coverage quality build
 
-.PHONY: test lint typecheck build deploy all
+.PHONY: test lint typecheck coverage quality build deploy all
 
 test:
 	@echo [ === TEST === ]
