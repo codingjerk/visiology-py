@@ -14,6 +14,15 @@ typecheck:
 	@echo [ === TYPECHECK === ]
 	@python3 -m mypy --strict --pretty --allow-untyped-decorators --no-error-summary --ignore-missing-imports visiology_py tests
 
+coverage:
+	@echo [ === COVERAGE === ]
+	@PYTHONPATH=. python3 -m pytest --cov=visiology_py --cov-fail-under=50 --cov-report=term-missing:skip-covered --quiet
+
+quality:
+	@echo [ === QUALITY === ]
+	@radon mi visiology_py/**.py
+	@radon cc visiology_py/**.py
+
 build:
 	@echo [ === BUILD === ]
 	@python3 setup.py -q sdist bdist

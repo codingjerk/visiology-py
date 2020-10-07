@@ -25,6 +25,14 @@ lint:
   stage: test
   script: make lint
 
+coverage:
+  stage: test
+  script: make coverage
+
+quality:
+  stage: test
+  script: make quality
+
 build:
   stage: build
   script: make build

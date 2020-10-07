@@ -27,6 +27,7 @@ setup(
         "pytest-runner==5.2",
         "pytest==6.0.1",
         "requests==2.24.0",
+        "radon==4.3.2",
         "wheel==0.34.2",
     ],
     tests_require=[
@@ -35,6 +36,7 @@ setup(
         "pytest-cov==2.10.1",
         "pytest-runner==5.2",
         "pytest==6.0.1",
+        "radon==4.3.2",
     ],
     test_suite="tests",
 )

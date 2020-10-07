@@ -104,6 +104,8 @@ decorate_api(
 1. `$ make test` — тесты (`pytest`)
 1. `$ make lint` — линтинг (`pycodestyle`)
 1. `$ make typecheck` — проверка типов (`mypy`)
+1. `$ make coverage` — проверка покрытия тестами (`pytest-cov`)
+1. `$ make quality` — проверка различных метрик качества кода (`radon`)
 1. `$ make build` — сборка пакета для публикации в PyPi
 1. `$ make` — всё вышеперечисленное
 
