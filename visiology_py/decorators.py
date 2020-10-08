@@ -70,8 +70,45 @@ def cached(time_to_live: timedelta) -> Decorator:
     return decorator
 
 
+# TODO: allow to retry idempotent only or all methods
+# TODO: check that max_tries more than zero
+# TODO: allow max_tries to be None
+def retried(
+    max_tries: int,
+    timeout_function: Callable[[int], float],
+) -> Decorator:
+    whitelist = {
+        # DC
+        "get_dimension_attributes",
+        "get_dimension_elements",
+
+        # ViQube
+        "version",
+    }
+
+    def decorator(function: Fany) -> Fany:
+        if function.__name__ not in whitelist:
+            return function
+
+        @functools.wraps(function)
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
+            last_exception = Exception("Internal error in `retry` decorator")
+            for try_number in range(max_tries):
+                try:
+                    return function(*args, **kwargs)
+                except Exception as e:
+                    time.sleep(timeout_function(try_number))
+                    last_exception = e
+
+            raise e
+
+        return wrapper
+
+    return decorator
+
+
 def decorate_api(api: type, *decorators: Decorator) -> None:
-    decorator = funcy.compose(decorators)
+    decorator = funcy.compose(*decorators)
 
     methods = inspect.getmembers(api, predicate=inspect.isfunction)
     for name, method in methods:

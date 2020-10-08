@@ -1,7 +1,18 @@
 from datetime import timedelta
 from unittest.mock import Mock
 
-from visiology_py.decorators import cached
+import visiology_py.datacollection as dc
+from visiology_py.decorators import cached, retried, decorate_api
+
+
+def exp(x: int) -> float:
+    return float(0.1 * (2 ** x))
+
+
+decorate_api(
+    dc.ApiV2,
+    retried(max_tries=1, timeout_function=exp),
+)
 
 
 def test_cached_caches_calls() -> None:
