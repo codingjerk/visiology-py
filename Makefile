@@ -17,7 +17,7 @@ typecheck:
 coverage:
 	@echo [ === COVERAGE === ]
 	@PYTHONPATH=. python3 -m pytest --cov=visiology_py --cov-fail-under=50 --cov-report=term-missing:skip-covered --quiet
-	@PYTHONPATH=. python3 -m pytest --cov=i2ls --cov-fail-under=100 --cov-report=term-missing:skip-covered --quiet
+	@PYTHONPATH=. python3 -m pytest --cov=i2ls --cov-fail-under=90 --cov-report=term-missing:skip-covered --quiet
 
 quality:
 	@echo [ === QUALITY === ]

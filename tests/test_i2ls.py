@@ -10,19 +10,6 @@ import tests.strategies as st
 T = TypeVar("T")
 
 
-@given(st.anything())
-def test_make_hashable_properties(a: Any) -> None:
-    assert hash(i2ls.make_hashable(a)) is not None
-
-
-def test_make_hashable_unknown_types() -> None:
-    class Unhashable:
-        __hash__ = None  # type: ignore
-
-    with pytest.raises(NotImplementedError):
-        i2ls.make_hashable(Unhashable())
-
-
 @given(st.anything_iterable())
 def test_duplicates_properties(xs: Collection[T]) -> None:
     dups = list(i2ls.duplicates(xs))
@@ -40,7 +27,7 @@ def test_duplicates_simple() -> None:
     dups2 = list(i2ls.duplicates([1, 1, 2, 3, 4, 4, 5]))
     assert dups2 == [1, 4]
 
-    dups3 = list(i2ls.duplicates([{1: 2}, {3: 4}, {1: 2}, [5, 6], {7, 8}], hash=i2ls.make_hashable))
+    dups3 = list(i2ls.duplicates([{1: 2}, {3: 4}, {1: 2}, [5, 6], {7, 8}]))
     assert dups3 == [{1: 2}]
 
     dups4 = list(i2ls.duplicates([1, 1, 2, 3, 4, 4, 5, 4, 6]))
