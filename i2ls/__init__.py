@@ -65,9 +65,12 @@ class NohashSet(Generic[T]):
     Set-like collection with no `Hashable` restriction on elements
     """
 
+    _real_buckets: Dict[int, List[T]]
+    _fallback_buckets: Dict[int, List[T]]
+
     def __init__(self) -> None:
-        self._real_buckets: Dict[int, List[T]] = dict()
-        self._fallback_buckets: Dict[int, List[T]] = dict()
+        self._real_buckets = dict()
+        self._fallback_buckets = dict()
 
     def add(self, item: T) -> None:
         try:
