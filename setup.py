@@ -4,7 +4,10 @@ from setuptools import find_packages, setup
 
 setup(
     name="visiology-py",
-    packages=find_packages(include="visiology_py"),
+    packages=[
+        *find_packages(include="visiology_py"),
+        *find_packages(include="i2ls"),
+    ],
     version="0.3.0",
     description=(
         "High level wrappers for Visiology APIs: "

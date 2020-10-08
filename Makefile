@@ -12,16 +12,17 @@ lint:
 
 typecheck:
 	@echo [ === TYPECHECK === ]
-	@python3 -m mypy --strict --pretty --allow-untyped-decorators --no-error-summary --ignore-missing-imports visiology_py tests
+	@python3 -m mypy --strict --pretty --allow-untyped-decorators --no-error-summary --ignore-missing-imports visiology_py i2ls tests
 
 coverage:
 	@echo [ === COVERAGE === ]
 	@PYTHONPATH=. python3 -m pytest --cov=visiology_py --cov-fail-under=50 --cov-report=term-missing:skip-covered --quiet
+	@PYTHONPATH=. python3 -m pytest --cov=i2ls --cov-fail-under=100 --cov-report=term-missing:skip-covered --quiet
 
 quality:
 	@echo [ === QUALITY === ]
-	@radon mi visiology_py/**.py
-	@radon cc visiology_py/**.py
+	@radon mi visiology_py/**.py i2ls/**.py
+	@radon cc visiology_py/**.py i2ls/**.py
 
 build:
 	@echo [ === BUILD === ]
