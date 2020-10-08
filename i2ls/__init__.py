@@ -1,5 +1,14 @@
-from typing import Any, Callable, Dict, Hashable, \
-    Iterable, Iterator, List, Tuple, TypeVar
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Hashable,
+    Iterable,
+    Iterator,
+    List,
+    Tuple,
+    TypeVar,
+)
 
 
 T = TypeVar("T")

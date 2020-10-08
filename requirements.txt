@@ -1,5 +1,6 @@
 dataclasses==0.6
 funcy==1.15
+hypothesis==5.36.0
 mypy==0.782
 pycodestyle==2.6.0
 pytest-cov==2.10.1

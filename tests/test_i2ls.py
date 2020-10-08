@@ -1,9 +1,10 @@
-import pytest
-from hypothesis import given
-import tests.strategies as st
 from typing import Any, Collection, List, TypeVar
 
+import pytest
+from hypothesis import given
+
 import i2ls
+import tests.strategies as st
 
 
 T = TypeVar("T")
