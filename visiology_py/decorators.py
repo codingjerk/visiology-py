@@ -29,6 +29,8 @@ def timed(function: Fany) -> Fany:
 
 # TODO: create a class instead of function, add idempotent_only mark
 # TODO: add idempotent mark to api methods
+# TODO: create and use NohashMap
+# TODO: create and use Cache with TTL and LRU restrictions
 def cached(time_to_live: timedelta) -> Decorator:
     whitelist = {
         # DC
