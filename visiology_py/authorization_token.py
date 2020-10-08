@@ -21,3 +21,6 @@ class AuthorizationToken:
         return {
             "Authorization": f"{self.type} {self.secret}",
         }
+
+    def __str__(self) -> str:
+        raise NotImplementedError

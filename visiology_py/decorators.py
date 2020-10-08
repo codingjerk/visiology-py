@@ -27,16 +27,27 @@ def timed(function: Fany) -> Fany:
     return wrapper
 
 
+# TODO: create a class instead of function, add idempotent_only mark
+# TODO: add idempotent mark to api methods
 def cached(time_to_live: timedelta) -> Decorator:
+    whitelist = {
+        # DC
+        "get_dimension_attributes",
+        "get_dimension_elements",
+
+        # ViQube
+        "version",
+    }
+
     def decorator(function: Fany) -> Fany:
-        has_self = "self" in inspect.signature(function).parameters
-        from_arg = 1 if has_self else 0
+        if function.__name__ not in whitelist:
+            return function
 
         memo: Dict[str, Any] = {}
 
         @functools.wraps(function)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
-            key = json.dumps([args[from_arg:], kwargs])
+            key = json.dumps([args[1:], kwargs])
             now = datetime.now()
 
             if key not in memo:
@@ -64,12 +75,4 @@ def decorate_api(api: type, *decorators: Decorator) -> None:
 
     methods = inspect.getmembers(api, predicate=inspect.isfunction)
     for name, method in methods:
-        if not any([
-            name.startswith("get_"),
-            name.startswith("post_"),
-            name.startswith("put_"),
-            name.startswith("delete_"),
-        ]):
-            continue
-
         setattr(api, name, decorator(method))
