@@ -56,8 +56,11 @@ def chunks(xs: Iterable[T], size: int) -> Iterator[List[T]]:
     """
 
     iterator = iter(xs)
-    while chunk := take(iterator, size):
+
+    chunk = take(iterator, size)
+    while chunk:
         yield chunk
+        chunk = take(iterator, size)
 
 
 class NohashSet(Generic[T]):
@@ -65,12 +68,9 @@ class NohashSet(Generic[T]):
     Set-like collection with no `Hashable` restriction on elements
     """
 
-    _real_buckets: Dict[int, List[T]]
-    _fallback_buckets: Dict[int, List[T]]
-
     def __init__(self) -> None:
-        self._real_buckets = dict()
-        self._fallback_buckets = dict()
+        self._real_buckets: Dict[int, List[T]] = dict()
+        self._fallback_buckets: Dict[int, List[T]] = dict()
 
     def add(self, item: T) -> None:
         try:
