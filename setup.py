@@ -8,7 +8,7 @@ setup(
         *find_packages(include="visiology_py"),
         *find_packages(include="i2ls"),
     ],
-    version="0.3.0",
+    version="0.3.1",
     description=(
         "High level wrappers for Visiology APIs: "
         "Datacollection, ViQube and ViQube admin"

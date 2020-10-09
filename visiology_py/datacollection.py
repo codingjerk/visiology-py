@@ -183,6 +183,19 @@ class ApiV2(vi.BaseApi):
             token=token,
         )
 
+    def get_measure_group_forms(
+        self,
+        measure_group_unique_name: str,
+        filter: Any,
+        token: Optional[vi.AuthorizationToken] = None,
+    ) -> Any:
+        return self._authorized_request(
+            "GET",
+            f"/measuregroups/{measure_group_unique_name}/forms",
+            json=filter,
+            token=token,
+        )
+
 
 class Utils:
     @staticmethod
