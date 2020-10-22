@@ -34,6 +34,30 @@ class ApiV3(vi.BaseApi):
             connection=connection,
         )
 
+    def get_metadata_databases_measuregroups(
+        self,
+        database_unique_identifier: str,
+        token: Optional[vi.AuthorizationToken] = None,
+    ) -> Any:
+        return self._authorized_request(
+            "GET",
+            f"/metadata/databases/{database_unique_identifier}/measuregroups",
+            json=None,
+            token=token,
+        )
+
+    def post_metadata_rawdata_query(
+        self,
+        query: Any,
+        token: Optional[vi.AuthorizationToken] = None,
+    ) -> Any:
+        return self._authorized_request(
+            "POST",
+            "/metadata/rawdata/query",
+            json=query,
+            token=token,
+        )
+
     def version(
         self,
         token: Optional[vi.AuthorizationToken] = None,
