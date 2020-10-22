@@ -69,18 +69,6 @@ class ApiV3(vi.BaseApi):
             token=token,
         )
 
-    def post_metadata_rawdata_query(
-        self,
-        query: Any,
-        token: Optional[vi.AuthorizationToken] = None,
-    ) -> Any:
-        return self._authorized_request(
-            "POST",
-            "/metadata/rawdata/query",
-            json=query,
-            token=token,
-        )
-
 
 class Utils:
     def find_rawdata_column_id_by_name(
