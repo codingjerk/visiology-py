@@ -109,7 +109,7 @@ import visiology_py.viqube as vq
 from visiology_py.decorators import decorate_api, retried
 
 
-# Декорируем API декоратором `cached`
+# Декорируем API декоратором `retried`
 decorate_api(
     vq.ApiV3,
     retried(max_tries=5),
