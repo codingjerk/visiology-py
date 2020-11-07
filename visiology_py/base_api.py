@@ -5,6 +5,7 @@ Base API class including methods shared between all APIs
 
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional
+from json.decoder import JSONDecodeError
 
 import requests
 
@@ -97,4 +98,8 @@ class BaseApi:
         )
 
         assert response.status_code == 200, response.text
-        return response.json()
+
+        try:
+            return response.json()
+        except JSONDecodeError:
+            assert response.text == "", response.text
