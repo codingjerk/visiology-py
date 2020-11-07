@@ -64,12 +64,18 @@ class ApiV3(vi.BaseApi):
     def get_databases_tables(
         self,
         database_unique_identifier: str,
+        table_unique_identifier: Optional[str] = None,
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
+        table_modifier = ""
+        if table_unique_identifier is not None:
+            table_modifier = "/" + table_unique_identifier
+
         return self._authorized_request(
             "GET",
-            "/databases/{}/tables".format(
+            "/databases/{}/tables{}".format(
                 database_unique_identifier,
+                table_modifier,
             ),
             json=None,
             token=token,
@@ -96,21 +102,24 @@ class ApiV3(vi.BaseApi):
         database_unique_identifier: str,
         table_unique_identifier: str,
         records: List[List[Any]],
+        columns: Optional[List[str]] = None,
         chunk_size: int = 100,
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
         # TODO: move chunk splitting to higher level api wrapper
         results = []
         for chunk in i2ls.chunks(records, chunk_size):
+            query: Any = {"values": chunk}
+            if columns is not None:
+                query["columns"] = columns
+
             results.append(self._authorized_request(
                 "POST",
                 "/databases/{}/tables/{}/records".format(
                     database_unique_identifier,
                     table_unique_identifier,
                 ),
-                json={
-                    "values": chunk,
-                },
+                json=query,
                 token=token,
             ))
 
