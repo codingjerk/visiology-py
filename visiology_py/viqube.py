@@ -3,9 +3,10 @@ Classes and methods to work with ViQube API
 """
 
 
-from typing import Any, Optional, Set
+from typing import Any, List, Optional, Set
 
 import visiology_py as vi
+import i2ls
 
 
 class ApiV3(vi.BaseApi):
@@ -41,6 +42,156 @@ class ApiV3(vi.BaseApi):
         return self._authorized_request(
             "GET",
             "/version",
+            json=None,
+            token=token,
+        )
+
+    def post_databases_query(
+        self,
+        database_unique_identifier: str,
+        query: Any,
+        token: Optional[vi.AuthorizationToken] = None,
+    ) -> Any:
+        return self._authorized_request(
+            "POST",
+            "/databases/{}/query".format(
+                database_unique_identifier,
+            ),
+            json=query,
+            token=token,
+        )
+
+    def get_databases_tables(
+        self,
+        database_unique_identifier: str,
+        token: Optional[vi.AuthorizationToken] = None,
+    ) -> Any:
+        return self._authorized_request(
+            "GET",
+            "/databases/{}/tables".format(
+                database_unique_identifier,
+            ),
+            json=None,
+            token=token,
+        )
+
+    def get_databases_tables_records(
+        self,
+        database_unique_identifier: str,
+        table_unique_identifier: str,
+        token: Optional[vi.AuthorizationToken] = None,
+    ) -> Any:
+        return self._authorized_request(
+            "GET",
+            "/databases/{}/tables/{}/records".format(
+                database_unique_identifier,
+                table_unique_identifier,
+            ),
+            json=None,
+            token=token,
+        )
+
+    def post_databases_tables_records(
+        self,
+        database_unique_identifier: str,
+        table_unique_identifier: str,
+        records: List[List[Any]],
+        chunk_size: int = 100,
+        token: Optional[vi.AuthorizationToken] = None,
+    ) -> Any:
+        # TODO: move chunk splitting to higher level api wrapper
+        results = []
+        for chunk in i2ls.chunks(records, chunk_size):
+            results.append(self._authorized_request(
+                "POST",
+                "/databases/{}/tables/{}/records".format(
+                    database_unique_identifier,
+                    table_unique_identifier,
+                ),
+                json={
+                    "values": chunk,
+                },
+                token=token,
+            ))
+
+        return results
+
+    def delete_databases_tables_records(
+        self,
+        database_unique_identifier: str,
+        table_unique_identifier: str,
+        filter: Any = None,
+        token: Optional[vi.AuthorizationToken] = None,
+    ) -> Any:
+        all_modifier = "/all" if filter is None else ""
+
+        return self._authorized_request(
+            "DELETE",
+            "/databases/{}/tables/{}/records{}".format(
+                database_unique_identifier,
+                table_unique_identifier,
+                all_modifier,
+            ),
+            json=filter,
+            token=token,
+        )
+
+    def get_metadata_databases_dimensions(
+        self,
+        database_unique_identifier: str,
+        token: Optional[vi.AuthorizationToken] = None,
+    ) -> Any:
+        return self._authorized_request(
+            "GET",
+            "/metadata/databases/{}/dimensions".format(
+                database_unique_identifier
+            ),
+            json=None,
+            token=token,
+        )
+
+    def get_metadata_databases_measuregroups(
+        self,
+        database_unique_identifier: str,
+        token: Optional[vi.AuthorizationToken] = None,
+    ) -> Any:
+        return self._authorized_request(
+            "GET",
+            "/metadata/databases/{}/measuregroups".format(
+                database_unique_identifier
+            ),
+            json=None,
+            token=token,
+        )
+
+    def get_metadata_databases_measuregroups_dimensions(
+        self,
+        database_unique_identifier: str,
+        measuregroup_unique_identifier: str,
+        token: Optional[vi.AuthorizationToken] = None,
+    ) -> Any:
+        return self._authorized_request(
+            "GET",
+            "/metadata/databases/{}/measuregroups/{}/dimensions".format(
+                database_unique_identifier,
+                measuregroup_unique_identifier,
+            ),
+            json=None,
+            token=token,
+        )
+
+    def get_metadata_databases_measuregroups_measures(
+        self,
+        database_unique_identifier: str,
+        measuregroup_unique_identifier: str,
+        token: Optional[vi.AuthorizationToken] = None,
+    ) -> Any:
+        return self._authorized_request(
+            "GET",
+            "/metadata/databases/{}/measuregroups/{}/measures".format(
+                database_unique_identifier,
+                measuregroup_unique_identifier,
+            ),
             json=None,
             token=token,
         )

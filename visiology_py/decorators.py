@@ -39,6 +39,14 @@ def cached(time_to_live: timedelta) -> Decorator:
 
         # ViQube
         "version",
+        "get_databases_tables",
+        "get_databases_tables_records",
+        "get_metadata_databases_dimensions",
+        "get_metadata_databases_measuregroups",
+        "get_metadata_databases_measuregroups_dimensions",
+        "get_metadata_databases_measuregroups_measures",
+        "post_databases_query",
+        "post_metadata_rawdata_query",
     }
 
     def decorator(function: Fany) -> Fany:
@@ -86,6 +94,17 @@ def retried(
 
         # ViQube
         "version",
+        "emit_token",
+        "get_databases_tables",
+        "get_databases_tables_records",
+        "get_metadata_databases_dimensions",
+        "get_metadata_databases_measuregroups",
+        "get_metadata_databases_measuregroups_dimensions",
+        "get_metadata_databases_measuregroups_measures",
+        "post_databases_query",
+        "post_metadata_rawdata_query",
+        "post_databases_tables_records",
+        "delete_databases_tables_records",
     }
 
     def decorator(function: Fany) -> Fany:
