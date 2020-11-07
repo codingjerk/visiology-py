@@ -6,6 +6,7 @@ Base API class including methods shared between all APIs
 from datetime import datetime, timedelta
 from json.decoder import JSONDecodeError
 from typing import Any, Dict, List, Optional
+from json.decoder import JSONDecodeError
 
 import requests
 
