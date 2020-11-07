@@ -121,7 +121,7 @@ def retried(
                     time.sleep(timeout_function(try_number))
                     last_exception = e
 
-            raise e
+            raise last_exception
 
         return wrapper
 
