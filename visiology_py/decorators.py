@@ -85,7 +85,7 @@ def cached(time_to_live: timedelta) -> Decorator:
 # TODO: allow max_tries to be None
 def retried(
     max_tries: int,
-    timeout_function: Optional[Callable[[int], float]],
+    timeout_function: Optional[Callable[[int], float]] = None,
 ) -> Decorator:
     whitelist = {
         # DC
