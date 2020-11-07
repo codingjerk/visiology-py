@@ -4,7 +4,7 @@ import inspect
 import json
 import time
 from datetime import datetime, timedelta
-from typing import Any, Callable, Dict, List, Type, TypeVar
+from typing import Any, Callable, Dict, List, Optional, Type, TypeVar
 
 
 Fany = Callable[..., Any]
@@ -85,7 +85,7 @@ def cached(time_to_live: timedelta) -> Decorator:
 # TODO: allow max_tries to be None
 def retried(
     max_tries: int,
-    timeout_function: Callable[[int], float],
+    timeout_function: Optional[Callable[[int], float]],
 ) -> Decorator:
     whitelist = {
         # DC
@@ -107,6 +107,12 @@ def retried(
         "delete_databases_tables_records",
     }
 
+    def default_timeout_function(try_number: int) -> float:
+        return float(max(0.1 * 2 ** try_number, 5 * 60))
+
+    if timeout_function is None:
+        timeout_function = default_timeout_function
+
     def decorator(function: Fany) -> Fany:
         if function.__name__ not in whitelist:
             return function
@@ -118,7 +124,7 @@ def retried(
                 try:
                     return function(*args, **kwargs)
                 except Exception as e:
-                    time.sleep(timeout_function(try_number))
+                    time.sleep(timeout_function(try_number))  # type: ignore
                     last_exception = e
 
             raise last_exception
