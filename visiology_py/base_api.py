@@ -90,6 +90,7 @@ class BaseApi:
         if token is None:
             token = self._ensure_token()
 
+        # TODO: specify timeout and use scaling timeout
         response = requests.request(
             method,
             self._prefixed_url(path),
