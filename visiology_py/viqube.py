@@ -9,14 +9,15 @@ import visiology_py as vi
 import i2ls
 
 
-class ApiV3(vi.BaseApi):
+class Api(vi.BaseApi):
     def __init__(
         self,
         connection: vi.Connection,
+        api_version: str,
     ) -> None:
         super().__init__(
             api_prefix="/viqube",
-            api_version="3.0",
+            api_version=api_version,
             authorization_scopes=[
                 "openid",
                 "profile",
@@ -218,7 +219,18 @@ class ApiV3(vi.BaseApi):
         )
 
 
+class ApiV2_5(Api):
+    def __init__(self, connection: vi.Connection) -> None:
+        super().__init__(connection, api_version="2.5")
+
+
+class ApiV3(Api):
+    def __init__(self, connection: vi.Connection) -> None:
+        super().__init__(connection, api_version="3.0")
+
+
 class Utils:
+    @staticmethod
     def find_rawdata_column_id_by_name(
         rawdata: Any,
         column_name: str,
@@ -229,6 +241,7 @@ class Utils:
 
         return None
 
+    @staticmethod
     def find_rawdata_distinct_values(
         rawdata: Any,
         column_name: str,
