@@ -388,6 +388,16 @@ class ApiV3(Api):
         super().__init__(connection, api_version="3.0")
 
 
+class ApiV2_5(Api):
+    def __init__(self, connection: vi.Connection) -> None:
+        super().__init__(connection, api_version="2.5")
+
+
+class ApiV3(Api):
+    def __init__(self, connection: vi.Connection) -> None:
+        super().__init__(connection, api_version="3.0")
+
+
 class Utils:
     @staticmethod
     def find_rawdata_column_id_by_name(
