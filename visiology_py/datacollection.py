@@ -47,6 +47,7 @@ class Api(vi.BaseApi, Generic[EntityId]):
             token=token,
         )
 
+    # TODO: make filter optional
     def get_dimension_elements(
         self,
         dimension_id: EntityId,
