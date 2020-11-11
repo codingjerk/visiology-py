@@ -81,8 +81,8 @@ def requests(
 
 
 @pytest.fixture
-def connection() -> vi.Connection:
-    return vi.Connection(
+def credentials() -> vi.Credentials:
+    return vi.Credentials(
         schema="schema",
         host="host",
         username="username",
@@ -92,13 +92,13 @@ def connection() -> vi.Connection:
 
 @pytest.fixture
 def datacollection_api_v2(
-    connection: vi.Connection,
+    credentials: vi.Credentials,
 ) -> dc.ApiV2:
-    return dc.ApiV2(connection)
+    return dc.ApiV2(credentials)
 
 
 @pytest.fixture
 def viqube_api_v3(
-    connection: vi.Connection,
+    credentials: vi.Credentials,
 ) -> vq.ApiV3:
-    return vq.ApiV3(connection)
+    return vq.ApiV3(credentials)

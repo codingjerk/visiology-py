@@ -1,5 +1,5 @@
 """
-Connection class which represents API credentials
+Representation of API credentials
 """
 
 
@@ -7,7 +7,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class Connection:
+class Credentials:
     schema: str
     host: str
     username: str

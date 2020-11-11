@@ -11,7 +11,7 @@ import visiology_py as vi
 class ApiV1(vi.BaseApi):
     def __init__(
         self,
-        connection: vi.Connection,
+        credentials: vi.Credentials,
     ) -> None:
         super().__init__(
             api_prefix="/datacollection/api",
@@ -28,7 +28,7 @@ class ApiV1(vi.BaseApi):
                 "Authorization": "Basic cm8uY2xpZW50OmFtV25Cc3B9dipvfTYkSQ==",
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            connection=connection,
+            credentials=credentials,
         )
 
     def get_dimension_attributes(
@@ -99,7 +99,7 @@ class ApiV1(vi.BaseApi):
 class ApiV2(vi.BaseApi):
     def __init__(
         self,
-        connection: vi.Connection,
+        credentials: vi.Credentials,
     ) -> None:
         super().__init__(
             api_prefix="/datacollection/api",
@@ -116,7 +116,7 @@ class ApiV2(vi.BaseApi):
                 "Authorization": "Basic cm8uY2xpZW50OmFtV25Cc3B9dipvfTYkSQ==",
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            connection=connection,
+            credentials=credentials,
         )
 
     def get_dimension_attributes(

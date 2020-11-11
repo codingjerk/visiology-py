@@ -10,7 +10,7 @@ from json.decoder import JSONDecodeError
 import requests
 
 from visiology_py.authorization_token import AuthorizationToken
-from visiology_py.connection import Connection
+from visiology_py.credentials import Credentials
 
 
 class BaseApi:
@@ -20,19 +20,19 @@ class BaseApi:
         api_version: str,
         authorization_scopes: List[str],
         authorization_headers: Dict[str, str],
-        connection: Connection,
+        credentials: Credentials,
     ) -> None:
         self._api_prefix = api_prefix
         self._api_version = api_version
         self._authorization_scopes = authorization_scopes
         self._authorization_headers = authorization_headers
-        self._connection = connection
+        self._credentials = credentials
 
         self._token: Optional[AuthorizationToken] = None
 
     def _url(self, path: str) -> str:
-        schema = self._connection.schema
-        host = self._connection.host
+        schema = self._credentials.schema
+        host = self._credentials.host
 
         return f"{schema}://{host}{path}"
 
@@ -57,8 +57,8 @@ class BaseApi:
                 "grant_type": "password",
                 "scope": " ".join(self._authorization_scopes),
                 "response_type": "id_token token",
-                "username": self._connection.username,
-                "password": self._connection.password,
+                "username": self._credentials.username,
+                "password": self._credentials.password,
             },
         )
 

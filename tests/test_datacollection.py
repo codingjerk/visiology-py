@@ -8,9 +8,9 @@ from tests.fixtures import *
 
 
 def test_datacollection_basics(
-    connection: vi.Connection,
+    credentials: vi.Credentials,
 ) -> None:
-    dc.ApiV2(connection)
+    dc.ApiV2(credentials)
 
 
 def test_datacollection_token_emission(

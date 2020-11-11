@@ -19,13 +19,13 @@
 import visiology_py as vi
 import visiology_py.datacollection as dc
 
-connection = vi.Connection(
+credentials = vi.Credentials(
     schema="https",
     host="bi.example.com",
     username="<USERNAME>",
     password="<PASSWORD>",
 )
-api = dc.ApiV2(connection)
+api = dc.ApiV2(credentials)
 elements = api.get_dimension_elements("dim_Status", None)
 
 # ... работаем с elements ...
@@ -39,8 +39,8 @@ elements = api.get_dimension_elements("dim_Status", None)
 import visiology_py as vi
 import visiology_py.viqube as vq
 
-connection = vi.Connection(...)
-api = vq.ApiV3(connection)
+credentials = vi.Credentials(...)
+api = vq.ApiV3(credentials)
 
 # Пример запроса, ГП вымышленная, для наглядности использованы русифицированные имена вместо транслита
 result = api.post_metadata_rawdata_query(

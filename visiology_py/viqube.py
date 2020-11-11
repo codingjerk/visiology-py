@@ -12,7 +12,7 @@ import i2ls
 class Api(vi.BaseApi):
     def __init__(
         self,
-        connection: vi.Connection,
+        credentials: vi.Credentials,
         api_version: str,
     ) -> None:
         super().__init__(
@@ -33,7 +33,7 @@ class Api(vi.BaseApi):
                 ),
                 "Content-Type": "application/x-www-form-urlencoded",
             },
-            connection=connection,
+            credentials=credentials,
         )
 
     def post_databases_query(
@@ -220,13 +220,13 @@ class Api(vi.BaseApi):
 
 
 class ApiV2_5(Api):
-    def __init__(self, connection: vi.Connection) -> None:
-        super().__init__(connection, api_version="2.5")
+    def __init__(self, credentials: vi.Credentials) -> None:
+        super().__init__(credentials, api_version="2.5")
 
 
 class ApiV3(Api):
-    def __init__(self, connection: vi.Connection) -> None:
-        super().__init__(connection, api_version="3.0")
+    def __init__(self, credentials: vi.Credentials) -> None:
+        super().__init__(credentials, api_version="3.0")
 
 
 class Utils:
