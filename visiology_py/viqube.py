@@ -36,18 +36,6 @@ class Api(vi.BaseApi):
             connection=connection,
         )
 
-    def get_metadata_databases_measuregroups(
-        self,
-        database_unique_identifier: str,
-        token: Optional[vi.AuthorizationToken] = None,
-    ) -> Any:
-        return self._authorized_request(
-            "GET",
-            f"/metadata/databases/{database_unique_identifier}/measuregroups",
-            json=None,
-            token=token,
-        )
-
     def post_databases_query(
         self,
         database_unique_identifier: str,
