@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 setup(
     name="visiology-py",
     packages=["visiology_py", "i2ls"],
-    version="0.7.0",
+    version="0.7.1",
     description=(
         "High level wrappers for Visiology APIs: "
         "Datacollection, ViQube and ViQube admin"
