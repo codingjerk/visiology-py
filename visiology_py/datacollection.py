@@ -132,7 +132,7 @@ class Api(vi.BaseApi, Generic[EntityId]):
     def post_measuregroups_elements(
         self,
         measuregroup_id: EntityId,
-        elements,
+        elements: Any,
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
         return self._authorized_request(
