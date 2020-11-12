@@ -116,6 +116,32 @@ class Api(vi.BaseApi, Generic[EntityId]):
             token=token,
         )
 
+    def get_measuregroups_elements(
+        self,
+        measuregroup_id: EntityId,
+        filter: Any = None,
+        token: Optional[vi.AuthorizationToken] = None,
+    ) -> Any:
+        return self._authorized_request(
+            "GET",
+            f"/measuregroups/{measuregroup_id}/elements?getAll=true",
+            json=filter,
+            token=token,
+        )
+
+    def post_measuregroups_elements(
+        self,
+        measuregroup_id: EntityId,
+        elements,
+        token: Optional[vi.AuthorizationToken] = None,
+    ) -> Any:
+        return self._authorized_request(
+            "POST",
+            f"/measuregroups/{measuregroup_id}/elements",
+            json=elements,
+            token=token,
+        )
+
     # TODO: use name consistent with api
     def get_measure_group_forms(
         self,
