@@ -4,13 +4,22 @@ Base API class including methods shared between all APIs
 
 
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional
 from json.decoder import JSONDecodeError
+from typing import Any, Dict, List, Optional
 
 import requests
 
 from visiology_py.authorization_token import AuthorizationToken
 from visiology_py.connection import Connection
+
+
+class TokenEmissionError(Exception):
+    def __init__(self, status_code: int, response_text: str) -> None:
+        message = (
+            f'server returned "bad" status code ({status_code}) '
+            f'with response text "{response_text}"'
+        )
+        super().__init__(message)
 
 
 class BaseApi:
@@ -62,7 +71,26 @@ class BaseApi:
             },
         )
 
-        token = response.json()
+        if response.status_code != 200:
+            raise TokenEmissionError(response.status_code, response.text)
+
+        try:
+            token = response.json()
+        except Exception:
+            raise TokenEmissionError(
+                response.status_code,
+                response.text
+            ) from None
+
+        if any(
+            [
+                "expires_in" not in token,
+                "token_type" not in token,
+                "access_token" not in token,
+            ]
+        ):
+            raise TokenEmissionError(response.status_code, response.text)
+
         expires_in = token["expires_in"]
         expires_at = datetime.now() + timedelta(seconds=expires_in)
 
