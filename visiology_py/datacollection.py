@@ -3,19 +3,23 @@ Classes and methods to work with DataCollection API
 """
 
 
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, Generic, List, Optional, TypeVar
 
 import visiology_py as vi
 
 
-class ApiV1(vi.BaseApi):
+EntityId = TypeVar("EntityId")
+
+
+class Api(vi.BaseApi, Generic[EntityId]):
     def __init__(
         self,
         credentials: vi.Credentials,
+        api_version: str,
     ) -> None:
         super().__init__(
             api_prefix="/datacollection/api",
-            api_version="1.0",
+            api_version=api_version,
             authorization_scopes=[
                 "openid",
                 "profile",
@@ -33,7 +37,7 @@ class ApiV1(vi.BaseApi):
 
     def get_dimension_attributes(
         self,
-        dimension_id: int,
+        dimension_id: EntityId,
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
         return self._authorized_request(
@@ -43,9 +47,10 @@ class ApiV1(vi.BaseApi):
             token=token,
         )
 
+    # TODO: make filter optional
     def get_dimension_elements(
         self,
-        dimension_id: int,
+        dimension_id: EntityId,
         filter: Any,
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
@@ -58,7 +63,7 @@ class ApiV1(vi.BaseApi):
 
     def put_dimension_elements(
         self,
-        dimension_id: int,
+        dimension_id: EntityId,
         elements: List[Any],
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
@@ -71,7 +76,7 @@ class ApiV1(vi.BaseApi):
 
     def post_dimension_elements(
         self,
-        dimension_id: int,
+        dimension_id: EntityId,
         elements: List[Any],
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
@@ -84,7 +89,7 @@ class ApiV1(vi.BaseApi):
 
     def delete_dimension_elements(
         self,
-        dimension_id: int,
+        dimension_id: EntityId,
         filter: Any,
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
@@ -95,106 +100,71 @@ class ApiV1(vi.BaseApi):
             token=token,
         )
 
-
-class ApiV2(vi.BaseApi):
-    def __init__(
+    def get_measuregroups(
         self,
-        credentials: vi.Credentials,
-    ) -> None:
-        super().__init__(
-            api_prefix="/datacollection/api",
-            api_version="2.0",
-            authorization_scopes=[
-                "openid",
-                "profile",
-                "email",
-                "roles",
-                "viewer_api",
-                "core_logic_facade",
-            ],
-            authorization_headers={
-                "Authorization": "Basic cm8uY2xpZW50OmFtV25Cc3B9dipvfTYkSQ==",
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            credentials=credentials,
-        )
-
-    def get_dimension_attributes(
-        self,
-        dimension_unique_name: str,
+        measuregroup_id: Optional[EntityId] = None,
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
+        modifier = "?getAll=true"
+        if measuregroup_id is not None:
+            modifier = f"/{measuregroup_id}"
+
         return self._authorized_request(
             "GET",
-            f"/dimensions/{dimension_unique_name}/attributes?getAll=true",
+            f"/measuregroups{modifier}",
             json=None,
             token=token,
         )
 
-    def get_dimension_elements(
+    def get_measuregroups_elements(
         self,
-        dimension_unique_name: str,
-        filter: Any,
+        measuregroup_id: EntityId,
+        filter: Any = None,
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
         return self._authorized_request(
             "GET",
-            f"/dimensions/{dimension_unique_name}/elements?getAll=true",
+            f"/measuregroups/{measuregroup_id}/elements?getAll=true",
             json=filter,
             token=token,
         )
 
-    def put_dimension_elements(
+    def post_measuregroups_elements(
         self,
-        dimension_unique_name: str,
-        elements: List[Any],
-        token: Optional[vi.AuthorizationToken] = None,
-    ) -> Any:
-        return self._authorized_request(
-            "PUT",
-            f"/dimensions/{dimension_unique_name}/elements",
-            json=elements,
-            token=token,
-        )
-
-    def post_dimension_elements(
-        self,
-        dimension_unique_name: str,
-        elements: List[Any],
+        measuregroup_id: EntityId,
+        elements: Any,
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
         return self._authorized_request(
             "POST",
-            f"/dimensions/{dimension_unique_name}/elements",
+            f"/measuregroups/{measuregroup_id}/elements",
             json=elements,
             token=token,
         )
 
-    def delete_dimension_elements(
-        self,
-        dimension_unique_name: str,
-        filter: Any,
-        token: Optional[vi.AuthorizationToken] = None,
-    ) -> Any:
-        return self._authorized_request(
-            "DELETE",
-            f"/dimensions/{dimension_unique_name}/elements",
-            json=filter,
-            token=token,
-        )
-
+    # TODO: use name consistent with api
     def get_measure_group_forms(
         self,
-        measure_group_unique_name: str,
+        measuregroup_id: EntityId,
         filter: Any,
         token: Optional[vi.AuthorizationToken] = None,
     ) -> Any:
         return self._authorized_request(
             "GET",
-            f"/measuregroups/{measure_group_unique_name}/forms",
+            f"/measuregroups/{measuregroup_id}/forms",
             json=filter,
             token=token,
         )
+
+
+class ApiV1(Api[int]):
+    def __init__(self, credentials: vi.Credentials):
+        super().__init__(credentials, api_version="1.0")
+
+
+class ApiV2(Api[str]):
+    def __init__(self, credentials: vi.Credentials):
+        super().__init__(credentials, api_version="2.0")
 
 
 class Utils:
